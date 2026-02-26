@@ -19,8 +19,8 @@ simulation_data_dir() = joinpath(@__DIR__, "simulation_data")
 # Material properties
 # =============================================================================
 materials = HomogenousMaterialProperties{Float_used}(
-    2.1,                    # k_rock - thermal conductivity of rock [W/(m·K)]                      # CHANGED 
-    1700000,                 # rho_c_rock - volumetric heat capacity [J/(m³·K)]                     # CHANGED
+    2.6,                    # k_rock - thermal conductivity of rock [W/(m·K)]                      # CHANGED 
+    2500000,                 # rho_c_rock - volumetric heat capacity [J/(m³·K)]                     # CHANGED
     0.59,                    # k_water [W/(m·K)]
     998 * 4179,              # rho_c_water [J/(m³·K)]
     52.7,                    # k_steel (outer pipe) [W/(m·K)]
@@ -43,7 +43,7 @@ boreholes2 = tuple(
     (Borehole{Float_used}(
         xc,                      # xc [m]
         yc,                      # yc [m]
-        1100,                   # h - borehole depth [m]                                       # CHANGED 
+        2100,                   # h - borehole depth [m]                                       # CHANGED 
         0.04337,                 # r_inner - inner radius of central pipe [m]
         0.00688,                 # t_inner - thickness of inner pipe wall [m]
         0.08085,                 # r_outer - inner radius of outer pipe [m]
@@ -100,7 +100,7 @@ T0 = initial_condition_thermal_gradient(
 # =============================================================================
 # Inlet model
 # =============================================================================
-Q = 170000                             # heat extraction rate [W]                  # CHANGED 
+Q = 350000                             # heat extraction rate [W]                  # CHANGED 
 c_water = 4179.0                     # specific heat of water [J/(kg·K)]
 inlet_model = HeatExchangerInlet{Float_used}(Q / (borehole.ṁ * c_water))
 
