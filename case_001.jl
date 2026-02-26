@@ -9,7 +9,7 @@ using JLD2: @save, @load
 using CUDA: CUDABackend
 
 # Choose backend: CPU() for testing, or CUDABackend()/ROCBackend() for GPU
-backend = CPU()
+backend = CUDABackend()
 Float_used = Float64
 
 simulation_data_dir() = joinpath(@__DIR__, "simulation_data")
@@ -34,9 +34,15 @@ materials = HomogenousMaterialProperties{Float_used}(
 # =============================================================================
 # Borehole geometry
 # =============================================================================
-borehole = Borehole{Float_used}(
-    0.0,                     # xc [m]
-    0.0,                     # yc [m]
+borehole_spacing = 0                                             # CHANGED
+XC = [-borehole_spacing / 2, borehole_spacing / 2]
+YC = [-borehole_spacing / 2, borehole_spacing / 2]
+unique!(XC)
+unique!(YC)
+boreholes2 = tuple(
+    (Borehole{Float_used}(
+        xc,                      # xc [m]
+        yc,                      # yc [m]
     922.0,                   # h - borehole depth [m]                                       # CHANGED 
     0.04337,                 # r_inner - inner radius of central pipe [m]
     0.00688,                 # t_inner - thickness of inner pipe wall [m]
@@ -44,10 +50,11 @@ borehole = Borehole{Float_used}(
     0.0081,                  # t_outer - thickness of outer pipe wall [m]
     0.108,                   # r_backfill - borehole radius [m]
     5,                       # ṁ - mass flow rate [kg/s]                                      # CHANGED 
-    0.0                      # insulation_depth [m] (no insulation mentioned in paper)
+    0.0                      # insulation_depth [m] 
+    ) for xc in XC, yc in YC)...
 )
 
-boreholes = (borehole,)
+
 
 # =============================================================================
 # Grid setup
@@ -113,7 +120,7 @@ cache = create_cache(
 # =============================================================================
 # Time integration
 # =============================================================================
-tspan = (0, 3600 * 24 * 365 * 20)  # simulate for 20 years
+tspan = (0, 3600 * 24)# * 365 * 20)  # simulate for 20 years
 
 prob = ODEProblem(rhs_diffusion_z!, T0, tspan, cache)
 
@@ -140,6 +147,8 @@ t_elapsed = @elapsed solve(
     maxiters=Int(1e10)
 )
 
+println("Simulation completed in $(t_elapsed) seconds")
+
 cache_cpu = create_cache(
     backend=CPU(),
     gridx=gridx,
@@ -149,6 +158,6 @@ cache_cpu = create_cache(
     boreholes=boreholes,
     inlet_model=inlet_model
 )
-basename(@__FILE__)
-splitext(basename(@__FILE__))[1]
-@save joinpath(simulation_data_dir(), "Hu_et_al_simulation_data.jld2") saved_values Δt cache_cpu t_elapsed
+
+@save joinpath(simulation_data_dir(),"$(splitext(basename(@__FILE__))[1]).jld2") saved_values Δt cache_cpu t_elapsed
+
