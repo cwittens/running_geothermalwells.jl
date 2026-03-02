@@ -120,7 +120,7 @@ cache = create_cache(
 # =============================================================================
 # Time integration
 # =============================================================================
-tspan = (0, 3600 * 24)# * 365 * 20)  # simulate for 20 years
+tspan = (0, 3600 * 24 * 365 * 20)  # simulate for 20 years
 
 prob = ODEProblem(rhs_diffusion_z!, T0, tspan, cache)
 
