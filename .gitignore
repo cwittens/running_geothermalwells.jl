@@ -1,1 +1,3 @@
 simulation_data/*.jld2
+*err
+*out
