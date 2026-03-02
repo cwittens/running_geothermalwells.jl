@@ -1,6 +1,6 @@
 using Pkg
 Pkg.activate(@__DIR__)
-Pkg.instantiate()
+# Pkg.instantiate()
 
 using GeothermalWells
 using OrdinaryDiffEqStabilizedRK: ODEProblem, solve, ROCK2
@@ -102,7 +102,7 @@ T0 = initial_condition_thermal_gradient(
 # =============================================================================
 Q = 240000                             # heat extraction rate [W]                  # CHANGED 
 c_water = 4179.0                     # specific heat of water [J/(kg·K)]
-inlet_model = HeatExchangerInlet{Float_used}(Q / (borehole.ṁ * c_water))
+inlet_model = HeatExchangerInlet{Float_used}(Q / (boreholes[1].ṁ * c_water)) # assuming every well has same ṁ
 
 # =============================================================================
 # Create simulation cache

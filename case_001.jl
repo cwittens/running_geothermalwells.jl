@@ -1,6 +1,6 @@
 using Pkg
 Pkg.activate(@__DIR__)
-Pkg.instantiate()
+# Pkg.instantiate()
 
 using GeothermalWells
 using OrdinaryDiffEqStabilizedRK: ODEProblem, solve, ROCK2
