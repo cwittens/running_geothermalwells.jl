@@ -99,8 +99,8 @@ sh_template = """#!/bin/bash
 #SBATCH -t 22:00:00
 #SBATCH --requeue
 #SBATCH -J {job_name}
-#SBATCH -o simulation_%j.out
-#SBATCH -e simulation_%j.err
+#SBATCH -o {job_name}_%j.out
+#SBATCH -e {job_name}_%j.err
 
 # Run your simulation
 julia {jl_file}

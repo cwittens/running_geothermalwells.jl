@@ -7,8 +7,8 @@
 #SBATCH -t 22:00:00
 #SBATCH --requeue
 #SBATCH -J case_017
-#SBATCH -o simulation_%j.out
-#SBATCH -e simulation_%j.err
+#SBATCH -o case_017_%j.out
+#SBATCH -e case_017_%j.err
 
 # Run your simulation
 julia case_017.jl
