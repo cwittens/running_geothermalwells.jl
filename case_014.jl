@@ -39,7 +39,7 @@ XC = [-borehole_spacing / 2, borehole_spacing / 2]
 YC = [-borehole_spacing / 2, borehole_spacing / 2]
 unique!(XC)
 unique!(YC)
-boreholes2 = tuple(
+boreholes = tuple(
     (Borehole{Float_used}(
         xc,                      # xc [m]
         yc,                      # yc [m]
