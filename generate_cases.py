@@ -35,6 +35,19 @@ cases = [
     (30, "2x2", 3.5, 2000000, 1500, 180000, 5, 60),
     (31, "2x2", 4.5, 2000000, 1600, 350000, 5, 55),
     (32, "2x2", 2.0, 2000000, 1800, 400000, 5, 20),
+    (100, "1x1", 2.8, 2000000, 2000, 400000, 5, 0),
+    (101, "2x2", 2.8, 2000000, 2000, 400000, 5, 10),
+    (102, "2x2", 2.8, 2000000, 2000, 400000, 5, 20),
+    (103, "2x2", 2.8, 2000000, 2000, 400000, 5, 30),
+    (104, "2x2", 2.8, 2000000, 2000, 400000, 5, 40),
+    (105, "2x2", 2.8, 2000000, 2000, 400000, 5, 50),
+    (106, "2x2", 2.8, 2000000, 2000, 400000, 5, 60),
+    (107, "2x2", 2.8, 2000000, 2000, 400000, 5, 70),
+    (108, "2x2", 2.8, 2000000, 2000, 400000, 5, 80),
+    (109, "2x2", 2.8, 2000000, 2000, 400000, 5, 90),
+    (110, "2x2", 2.8, 2000000, 2000, 400000, 5, 100),
+    (111, "2x2", 2.8, 2000000, 2000, 400000, 5, 110),
+    (112, "2x2", 2.8, 2000000, 2000, 400000, 5, 120),
 ]
 
 # Read the template
@@ -85,7 +98,7 @@ for case_num, case_type, k_rock, rho_c_rock, depth, Q, m_dot, spacing in cases:
         f.write(content)
     print(f"Generated {filename} ({case_type}, k={k_rock}, rho_c={rho_c_rock}, depth={depth}, Q={Q}, spacing={spacing})")
 
-print("\nDone! Generated 32 case files.")
+print(f"\nDone! Generated {len(cases)} case files.")
 
 # =============================================================================
 # Generate SLURM .sh files for each case
@@ -96,7 +109,7 @@ sh_template = """#!/bin/bash
 #SBATCH -p mit_preemptable
 #SBATCH -G h200:1
 #SBATCH -c 4
-#SBATCH -t 22:00:00
+#SBATCH -t 48:00:00
 #SBATCH --requeue
 #SBATCH -J {job_name}
 #SBATCH -o {job_name}_%j.out
@@ -114,18 +127,18 @@ for case_num, *_ in cases:
         f.write(sh_template.format(job_name=job_name, jl_file=jl_file).lstrip("\n"))
     print(f"Generated {sh_file}")
 
-print("\nDone! Generated 32 .sh files.")
+print(f"\nDone! Generated {len(cases)} .sh files.")
 
 # =============================================================================
 # Generate master submission script
 # =============================================================================
 with open("submit_all.sh", "w", encoding="utf-8", newline="\n") as f:
     f.write("#!/bin/bash\n")
-    f.write("# Submit all 32 cases to SLURM\n\n")
-    f.write("for i in $(seq -w 1 32); do\n")
-    f.write('    echo "Submitting case_${i}..."\n')
-    f.write('    sbatch "case_${i}.sh"\n')
-    f.write("done\n")
+    f.write(f"# Submit all {len(cases)} cases to SLURM\n\n")
+    for case_num, *_ in cases:
+        job = f"case_{case_num:03d}"
+        f.write(f'echo "Submitting {job}..."\n')
+        f.write(f'sbatch "{job}.sh"\n')
     f.write('\necho "All jobs submitted!"\n')
 
 print("Generated submit_all.sh")
