@@ -1,4 +1,5 @@
 simulation_data/*.jld2
 simulation_data/array_study/*.jld2
+simulation_data/array_study/checkpoints/*.jld2
 *err
 *out

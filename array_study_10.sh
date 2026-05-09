@@ -6,9 +6,9 @@
 #SBATCH -c 4
 #SBATCH -t 48:00:00
 #SBATCH --requeue
-#SBATCH -J array_study_01
-#SBATCH -o array_study_01_%j.out
-#SBATCH -e array_study_01_%j.err
+#SBATCH -J array_study_10
+#SBATCH -o array_study_10_%j.out
+#SBATCH -e array_study_10_%j.err
 
 # Run your simulation
-julia array_study_01.jl
+julia array_study_10.jl

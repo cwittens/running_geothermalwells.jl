@@ -45,7 +45,7 @@ materials = HomogenousMaterialProperties{Float_used}(
 # =============================================================================
 # Inspired from Newcastle borehole geometry from Brown et al. 
 
-borehole_spacing = 0                                           
+borehole_spacing = 20                                           
 XC = [-borehole_spacing / 2, borehole_spacing / 2]
 YC = [-borehole_spacing / 2, borehole_spacing / 2]
 unique!(XC)
