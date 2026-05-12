@@ -1,8 +1,5 @@
 using Pkg
-
 Pkg.activate(@__DIR__)
-path_package = joinpath(@__DIR__, "GeothermalWells.jl")
-Pkg.develop(path=path_package)
 
 using GeothermalWells
 using OrdinaryDiffEqStabilizedRK: ODEProblem, solve, ROCK2
